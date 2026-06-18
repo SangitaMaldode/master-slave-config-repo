@@ -8,12 +8,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Code') {
-            steps {
-                git 'https://github.com/SangitaMaldode/master-slave-config-repo.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
@@ -22,17 +16,13 @@ pipeline {
 
         stage('Stop Old Container') {
             steps {
-                sh '''
-                docker rm -f $CONTAINER_NAME || true
-                '''
+                sh 'docker rm -f $CONTAINER_NAME || true'
             }
         }
 
         stage('Run Container') {
             steps {
-                sh '''
-                docker run -d -p 3000:3000 --name $CONTAINER_NAME $IMAGE_NAME
-                '''
+                sh 'docker run -d -p 3000:3000 --name $CONTAINER_NAME $IMAGE_NAME'
             }
         }
 
